@@ -15,28 +15,31 @@
 <div class="container">
 <form action = "form.php" method = "POST">
 
-		<h2>Products123</h2>
+		<h2>Products Upload</h2>
 		<br>
 			<table class="table table-bordered table-condensed">
 			<tr>
 			<td>ID</td>
-			<!--<td>Image</td>-->
 			<td>NAME</td>
-			
-			
-			<td>Price</td>
+			<td>PRICE</td>
+			<td>IMAGE</td>
 			</tr>
 			<tr>
-			
+			<td><textarea name="category_id" id="category_id" rows="2" cols="30"></textarea></td>
 			<!--<td><input type="text" name="image" id="image"></td> -->
-			<td><input type="text" name="category_id" id="category_id"></td>
-			<td><input type="text" name="name" id="name"></td>
-			
-			<td><input type="text" name="price" id="price"></td>
+			<td><textarea name="name" id="name" rows="2" cols="30"></textarea></td>
+			<td><textarea name="price" id="price" rows="2" cols="30"></textarea></td>
+			<td>
+        		<div class="wrapper">
+            	<form method="POST" enctype="multipart/form-data">
+                <input type="file" name="fileUpload"  id="fileUpload" >
+                <input type="submit" name="submit1" value="Upload" >
+            	</form>
+        	</td>
 			</tr>
 			</table>		
 		<br><br>  
-		<input type="submit" name="register" value="Register">
+		<input type="submit" name="submit" value="Upload">
 	</form>	
 </div>
 </body>
@@ -63,9 +66,9 @@
 				if ($conn->connect_error) {
 					die("connection false: ".$conn->connect_error);
 				}
-				$sql = "INSERT INTO newproducts (stt, product_id, name, model, price) VALUES ('$stt', '$product_id', 
-				'$name', '$model', '$price')";
-				$sql1 = "SELECT stt, product_id, name, model, price FROM newproducts";
+				$sql = "INSERT INTO 18php02_shop_new (name, category_id, price) VALUES ('$name', '$category_id', 
+				'$price')";
+				$sql1 = "SELECT name, category_id, price FROM 18php02_shop_new";
 				$result = $conn->query($sql1);
 				if ($conn->query($sql) === TRUE) {
 					if ($result->num_rows >0) {
@@ -104,4 +107,32 @@
 			}
 		}
 	?>
-	
+<?php
+if (isset($_POST['submit1'])) {
+    $allupload = true;
+    $target_dir = "";
+    $target_file = $target_dir . basename($_FILES['fileUpload']['name']);
+    $typeFile = pathinfo($_FILES['fileUpload']['name'], PATHINFO_EXTENSION);
+    $typeFileAllow = array('png','jpg','jpeg', 'gif');
+    if(!in_array(strtolower($typeFile), $typeFileAllow)){
+        $error = "File bạn vừa chọn hệ thống không hỗ trợ, bạn vui lòng chọn hình ảnh";
+        $allupload = false;
+    }
+    $sizeFile = $_FILES['fileUpload']['size'];
+    if($sizeFile > 5000000){
+        $error = "File bạn chọn không được quá 5MB";
+        $allupload = false;
+    }   
+    if (file_exists($target_file)) {
+    echo "File đã tồn tại.";
+    $allupload = false;
+    }    
+    if(empty($error) && ($allupload)){
+        if(move_uploaded_file($_FILES["fileUpload"]["tmp_name"], $target_file)){
+            echo "Bạn đã upload file thành công";
+        }  else {
+            echo "File bạn vừa upload gặp sự cố";
+        }
+    }
+}
+?>
