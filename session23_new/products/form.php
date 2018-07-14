@@ -70,43 +70,9 @@
 				'$price')";
 				$sql1 = "SELECT name, category_id, price FROM 18php02_shop_new";
 				$result = $conn->query($sql1);
-				if ($conn->query($sql) === TRUE) {
-					if ($result->num_rows >0) {
-						echo "<table border=1 cellspacing=0 cellpading=0>
-						<tr> 
-							<th><font color=blue>STT</th>
-							<th>Name</th> 
-							<th>Product_id</th>
-							<th>Price</font></th>
-						</tr>  
-						</table>";
-						while ($row = $result->fetch_assoc()) {
-							   	$a = $row["stt"];  
-								$b = $row["name"];  
-								$c = $row["product_id"]; 
-								$d = $row["price"]; 
-							echo "<table border=1 cellspacing=0 cellpading=0>  
-									<tr>
-									<th><font color=blue>$a</th>
-									<th>$b</th> 
-									<th>$c</th>
-									<th>$d</font></th>
-									</tr>
-									</table>";  
-						}
-					}
-					else{
-						echo "0 results";
-					}
 				}
-				else
-				{
-					echo "Error";
-				}
-				
-			}
 		}
-	?>
+?>
 <?php
 if (isset($_POST['submit1'])) {
     $allupload = true;

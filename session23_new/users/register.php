@@ -18,4 +18,4 @@ if(isset($_POST['register'])){
 	echo "Register success!";
 }
 ?>
-<h3>Please register before buying</h3>
+<h3>Please register  before buying</h3>
